@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,9 +54,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Using lambda instead of 'csrf().disable()'
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/products/new", "/products/authenticate").permitAll()
+                        .requestMatchers("/products/new", "/products/authenticate","/products/refreshToken").permitAll()
                         .requestMatchers("/products/**").authenticated()
                 ) // Replaces 'authorizeHttpRequests()' and 'and()'
+                //.httpBasic(Customizer.withDefaults());
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ) // Replaces 'sessionManagement()' and 'and()'
